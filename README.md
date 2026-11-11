@@ -1,10 +1,10 @@
 # File Integrity Monitor
 
-A continuous file integrity monitoring tool that hashes every file in a directory, saves a baseline, then re-scans periodically and alerts on any file that was modified, added, or deleted — the same core mechanic behind enterprise tools like Tripwire and OSSEC. Written by Joel Odum.
+A continuous file integrity monitoring tool that hashes every file in a directory, saves a baseline, then re-scans periodically and alerts on any file that was modified, added, or deleted; the same core mechanic behind enterprise tools like Tripwire and OSSEC. Written by Joel Odum.
 
 ## The Idea
 
-Most intrusion detection focuses on network traffic — catching attacks as they happen. File integrity monitoring is different: it's about catching what an attacker *left behind*. If a malware drops a new file, modifies a binary, or injects a backdoor into a web app's source code, a hash-based monitor catches it even if the attacker cleaned up their tracks in the logs. It's also a real compliance requirement — PCI-DSS and SOC 2 both mandate file integrity monitoring for production systems, so this tool mirrors something you'd actually find in an enterprise security stack.
+Most intrusion detection focuses on network traffic.File integrity monitoring is different: it's about catching what an attacker *left behind*. If a malware drops a new file, modifies a binary, or injects a backdoor into a web app's source code, a hash-based monitor catches it even if the attacker cleaned up their tracks in the logs. It's also a real compliance requirement PCI-DSS and SOC 2 both mandate file integrity monitoring for production systems, so this tool mirrors something you'd actually find in an enterprise security stack.
 
 The interesting design problem was persistence: unlike the other tools in this set, this one needs to remember state between runs. The baseline gets saved as a JSON file so it survives restarts and can be compared against any future scan.
 
@@ -14,9 +14,9 @@ The interesting design problem was persistence: unlike the other tools in this s
 - Saves the result as a baseline JSON file
 - Re-scans continuously at a configurable interval, comparing against the baseline
 - Alerts on three change types: modified files (hash mismatch), new files, and deleted files
-- For modified files, shows both the old and new hash for both algorithms side by side — making the SHA-256 vs MD5 length and format difference visible, not just stated
+- For modified files, shows both the old and new hash for both algorithms side by side, making the SHA-256 vs MD5 length and format difference visible, not just stated
 
-## SHA-256 vs MD5 — Why Both
+## SHA-256 vs MD5 Why Both
 
 SHA-256 is what actually drives the integrity comparison — MD5 collisions are feasible in practice (two different files can produce the same MD5 hash), which makes it genuinely insecure as a sole integrity check. MD5 is shown alongside SHA-256 purely as a comparison: same file, same content, different algorithm, visibly different output. The contrast makes "use SHA-256, not MD5" a concrete observation rather than an abstract rule.
 
